@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include<bits/stdc++.h>
 #include <math.h>
 using namespace std;
 
@@ -109,18 +108,22 @@ class Toroid{
         }
 
         void update_y(float theta_y){
+        #pragma omp parallel for
             for(auto &point:this->points){
                 point = matmul(Y_ROTATION(theta_y),point);
             }
+        #pragma omp parallel for
             for(auto &point:this->surface_normals){
                 point = matmul(Y_ROTATION(theta_y),point);
             }
         }
 
         void update_x(float theta_x){
+        #pragma omp parallel for
             for(auto &point:this->points){
                 point = matmul(X_ROTATION(theta_x),point);
             }
+        #pragma omp parallel for
             for(auto &point:this->surface_normals){
                 point = matmul(X_ROTATION(theta_x),point);
             }

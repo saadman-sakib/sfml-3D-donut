@@ -1,6 +1,18 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <math.h>
+#include <chrono>
+
+typedef std::chrono::steady_clock::time_point time_point;
+typedef std::chrono::steady_clock clock_time;
+typedef clock_time::duration duration;
+typedef std::chrono::milliseconds ms;
+
+template <typename T> std::chrono::milliseconds inMilliseconds(T duration)
+{
+  return std::chrono::duration_cast<std::chrono::milliseconds>(duration);
+}
+
 using namespace std;
 
 vector<float> matmul(vector<vector<float>> A, vector<float> B) {
@@ -162,10 +174,18 @@ int main()
 
     Toroid toroid = Toroid(80, 200);
     toroid.init();
-
+    int rt = 0;
+    // take time here
+    time_point start = clock_time::now();
+    
     //window main loop
     while (window.isOpen()){
-
+        if(rt % 100 == 0) {
+            time_point end = clock_time::now();
+            cout << "Main loop took " << inMilliseconds(end - start).count() << " milliseconds" << endl;
+            cout << rt << endl;
+        }
+        rt++;
         //event loop (check for events)
         sf::Event event1;
         while (window.pollEvent(event1)){
